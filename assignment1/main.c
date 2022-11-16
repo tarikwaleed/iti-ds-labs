@@ -4,6 +4,7 @@
 
 int main()
 {
+    //will be reserved in the stack
     LinkedList myList = {.head = NULL, .tail = NULL};
     Add(&myList, 3);
     Add(&myList, 4);

@@ -16,7 +16,6 @@ typedef struct LinkedList
 
 }LinkedList;
 
-
 //void Add(LinkedList *myList, int data)
 
 void Add(LinkedList* mylist,int data)
