@@ -1,30 +1,30 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-
 typedef struct Node
 {
     int Data;
-    struct Node* Prev;
-    struct Node* Next;
-}Node;
+    struct Node *Prev;
+    struct Node *Next;
+} Node;
 
 typedef struct LinkedList
 {
-    struct Node* head;
-    struct Node* tail;
+    struct Node *head;
+    struct Node *tail;
 
-}LinkedList;
+} LinkedList;
 
-//void Add(LinkedList *myList, int data)
+// void Add(LinkedList *myList, int data)
 
-void Add(LinkedList* mylist,int data)
+void Add(LinkedList *mylist, int data)
 {
     Node *newNode = malloc(sizeof(Node));
     newNode->Data = data;
-    newNode->Prev = newNode->Next = NULL;
+    newNode->Prev = NULL;
+    newNode->Next = NULL;
 
-    if(mylist->head == NULL)
+    if (mylist->head == NULL)
     {
         mylist->head = mylist->tail = newNode;
     }
@@ -36,11 +36,11 @@ void Add(LinkedList* mylist,int data)
     }
 }
 
-void Display(LinkedList* mylist)
+void Display(LinkedList *mylist)
 {
-    struct Node* current = mylist->head;
+    struct Node *current = mylist->head;
 
-    while(current != NULL)
+    while (current != NULL)
     {
         printf("%d  ", current->Data);
         current = current->Next;
@@ -48,13 +48,13 @@ void Display(LinkedList* mylist)
     printf("\n");
 }
 
-Node* GetNodeByData(LinkedList* mylist,int data)
+Node *GetNodeByData(LinkedList *mylist, int data)
 {
     Node *current = mylist->head;
 
-    while(current != NULL)
+    while (current != NULL)
     {
-        if(data == current->Data)
+        if (current->Data == data)
             return current;
 
         current = current->Next;
@@ -63,26 +63,31 @@ Node* GetNodeByData(LinkedList* mylist,int data)
     return NULL;
 }
 
-void Remove(LinkedList* mylist,int data)
+void Remove(LinkedList *mylist, int data)
 {
-    struct Node* node = GetNodeByData(mylist,data);
+    struct Node *node = GetNodeByData(mylist, data);
 
-    if(node == NULL)
+    // the node doesn't exist in the list
+    if (node == NULL)
         return;
 
-    if(node == mylist->head)
+    // the node is the first elemnt in the list
+    if (node == mylist->head)
     {
-        if(mylist->head == mylist->tail)
+        // the node is the first and only element
+        if (mylist->head == mylist->tail)
         {
             mylist->head = mylist->tail = NULL;
         }
+        // the node is the first and there are other nodes
         else
         {
-           mylist->head =  mylist->head->Next;
-           mylist->head->Prev = NULL;
+            mylist->head = mylist->head->Next;
+            mylist->head->Prev = NULL;
         }
     }
-    else if(node == mylist->tail)
+    // the node is the last element in the array
+    else if (node == mylist->tail)
     {
         mylist->tail = mylist->tail->Prev;
         mylist->tail->Next = NULL;
@@ -96,31 +101,39 @@ void Remove(LinkedList* mylist,int data)
     free(node);
 }
 
-void InsertAfter(int data, int afterData)
+void InsertAfterX(LinkedList *mylist, int data, int xData)
 {
-
+    Node *x = GetNodeByData(mylist, xData);
+    if (x != NULL)
+    {
+        Node *newNode = malloc(sizeof(Node));
+        newNode->Data = data;
+        newNode->Next = x->Next;
+        newNode->Prev = x;
+        x->Next = newNode;
+        if(x==mylist->tail){
+            mylist->tail=newNode;
+        }
+        else{
+            newNode->Next->Prev=newNode;
+        }
+    }
 }
 
-int GetDataByIndex(int index)
+int GetDataByIndex(LinkedList* mylist,int index)
 {
-
 }
 
 int GetCount()
 {
-
 }
 
-
-Node* Reverse()
+Node *Reverse()
 {
-
 }
 
 void InPlaceReverse()
 {
-
 }
-
 
 #endif // LINKED_LIST_H

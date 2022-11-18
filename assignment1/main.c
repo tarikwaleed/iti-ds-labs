@@ -8,13 +8,10 @@ int main()
     LinkedList myList = {.head = NULL, .tail = NULL};
     Add(&myList, 3);
     Add(&myList, 4);
-    Add(&myList, 5);
-    Add(&myList, 5);
+    Add(&myList, 6);
+    Display(&myList);// 3  4  6  
+    InsertAfterX(&myList,0,4);
     Display(&myList);
-    Remove(&myList,5);
-    Display(&myList);
+    return 0;
 
-    return 0;
-    printf("Hello world!\n");
-    return 0;
 }
