@@ -135,11 +135,18 @@ int GetDataByIndex(LinkedList* mylist,int index)
 
 }
 
-int GetCount()
+int GetCount(LinkedList* mylist)
 {
+    Node* x=mylist->head;
+    int count=0;
+    while(x!=NULL){
+        count++;
+        x=x->Next;
+    }
+    return count;
 }
 
-Node *Reverse()
+Node* Reverse()
 {
 }
 
