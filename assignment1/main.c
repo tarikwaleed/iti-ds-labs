@@ -10,8 +10,11 @@ int main()
     Add(&myList, 4);
     Add(&myList, 6);
     Display(&myList);// 3  4  6  
-    InsertAfterX(&myList,0,4);
-    Display(&myList);
+    InsertAfterX(&myList,7,6);
+    Display(&myList); // 3  4  6  7  
+    int data=GetDataByIndex(&myList,1);
+    printf("%d\n",data);
+
     return 0;
 
 }

@@ -38,7 +38,7 @@ void Add(LinkedList *mylist, int data)
 
 void Display(LinkedList *mylist)
 {
-    struct Node *current = mylist->head;
+    struct Node* current = mylist->head;
 
     while (current != NULL)
     {
@@ -48,9 +48,9 @@ void Display(LinkedList *mylist)
     printf("\n");
 }
 
-Node *GetNodeByData(LinkedList *mylist, int data)
+Node* GetNodeByData(LinkedList *mylist, int data)
 {
-    Node *current = mylist->head;
+    Node* current = mylist->head;
 
     while (current != NULL)
     {
@@ -122,6 +122,17 @@ void InsertAfterX(LinkedList *mylist, int data, int xData)
 
 int GetDataByIndex(LinkedList* mylist,int index)
 {
+    Node* x=mylist->head;
+    int count=0;
+    while(x!=NULL){
+        if(index==count){
+            return x->Data;
+        }
+        count++;
+        x=x->Next;
+    }
+    return 0;
+
 }
 
 int GetCount()
