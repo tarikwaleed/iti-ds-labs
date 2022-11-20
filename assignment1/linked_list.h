@@ -1,5 +1,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
+#include <stdlib.h>
 
 typedef struct Node
 {
@@ -19,7 +20,7 @@ typedef struct LinkedList
 
 void Add(LinkedList *mylist, int data)
 {
-    Node *newNode = malloc(sizeof(Node));
+    Node *newNode = (Node*)malloc(sizeof(Node));
     newNode->Data = data;
     newNode->Prev = NULL;
     newNode->Next = NULL;
@@ -106,7 +107,7 @@ void InsertAfterX(LinkedList *mylist, int data, int xData)
     Node *x = GetNodeByData(mylist, xData);
     if (x != NULL)
     {
-        Node *newNode = malloc(sizeof(Node));
+        Node *newNode = (Node*)malloc(sizeof(Node));
         newNode->Data = data;
         newNode->Next = x->Next;
         newNode->Prev = x;
