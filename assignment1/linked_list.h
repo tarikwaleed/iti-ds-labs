@@ -146,12 +146,32 @@ int GetCount(LinkedList* mylist)
     return count;
 }
 
-Node* Reverse()
+Node* Reverse(LinkedList* mylist)
 {
 }
 
-void InPlaceReverse()
+void InPlaceReverse(LinkedList* mylist)
 {
+    if(mylist->head == NULL)
+        // return mylist->head;
+        return;
+    Node* current = mylist->head;
+    Node* temp;
+    while(current != NULL)
+    {
+        // 1
+        temp = current->Next;
+        // 2
+        current->Next = current->Prev;
+        // 3
+        current->Prev = temp;
+        if(temp == NULL){
+            mylist->tail=mylist->head;
+            mylist->head = current;
+        }
+        current = temp;
+    }
+    // return mylist->head;
 }
 
 #endif // LINKED_LIST_H
