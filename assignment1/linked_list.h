@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 #include <stdlib.h>
+#include<stdio.h>
 
 typedef struct Node
 {
