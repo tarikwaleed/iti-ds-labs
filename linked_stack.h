@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../assignment1/linked_list.h"
+#include "linked_list.h"
+#include "node.h"
 #define MAXSIZE 10
 #define TRUE 1
 #define FALSE 0
