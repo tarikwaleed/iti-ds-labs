@@ -1,13 +1,17 @@
+// those are called include guards, i don't really understand them
+// but they're very useful and solve alot of problems related 
+// to including header files
+#ifndef LINKED_STACK_H_
+#define  LINKED_STACK_H_
 #include <stdio.h>
 #include <stdlib.h>
-#include "linked_list.h"
 #include "node.h"
 #define MAXSIZE 10
 #define TRUE 1
 #define FALSE 0
 typedef struct LinkedStack
 {
-    Node* top;
+    struct Node* top;
 }LinkedStack;
 void LinkedStackPush(LinkedStack* stack,int value){
     Node* ptr=(Node*)malloc(sizeof(Node));
@@ -36,3 +40,4 @@ int LinkedStackPop(LinkedStack* stack,int* value){
     return TRUE;
     
 }
+#endif
