@@ -1,22 +1,18 @@
-#ifndef LINKED_LIST_H
-#define LINKED_LIST_H
+#ifndef LINKED_LIST_H_
+#define LINKED_LIST_H_
+#include "node.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.h"
 
 typedef struct LinkedList {
   struct Node *head;
   struct Node *tail;
+  int lenght;
 
 } LinkedList;
 
-// void Add(LinkedList *myList, int data)
-
-void Add(LinkedList *mylist, int data) { // commet
-  Node *newNode = (Node *)malloc(sizeof(Node));
-  newNode->Data = data; /// fsdfsdf
-  newNode->Prev = NULL;
-  newNode->Next = NULL;
+void LinkedListInsert_tail(LinkedList *mylist, int data) {
+  Node *newNode = CreateNode(data);
 
   if (mylist->head == NULL) {
     mylist->head = mylist->tail = newNode;
@@ -25,9 +21,10 @@ void Add(LinkedList *mylist, int data) { // commet
     newNode->Prev = mylist->tail;
     mylist->tail = newNode;
   }
+  mylist->lenght++;
 }
 
-void Display(LinkedList *mylist) {
+void LinkedListDisplay(LinkedList *mylist) {
   struct Node *current = mylist->head;
 
   while (current != NULL) {
@@ -43,20 +40,19 @@ Node *GetNodeByData(LinkedList *mylist, int data) {
   while (current != NULL) {
     if (current->Data == data)
       return current;
-
     current = current->Next;
   }
 }
 
-void Remove(LinkedList *mylist, int data) {
-  struct Node *node = GetNodeByData(mylist, data);
+void LinkedListRemove(LinkedList *mylist, int data) {
+  Node *node = GetNodeByData(mylist, data);
 
   // the node doesn't exist in the list
-  if (node == NULL)
+  if (!node)
     return;
 
   // the node is the first elemnt in the list
-  if (node == mylist->head) { // fdsfs
+  if (node == mylist->head) { 
     // the node is the first and only element
     if (mylist->head == mylist->tail) {
       mylist->head = mylist->tail = NULL;
@@ -71,6 +67,7 @@ void Remove(LinkedList *mylist, int data) {
   else if (node == mylist->tail) {
     mylist->tail = mylist->tail->Prev;
     mylist->tail->Next = NULL;
+    // The node is in the middle of the array
   } else {
     node->Prev->Next = node->Next;
     node->Next->Prev = node->Prev;
@@ -143,4 +140,4 @@ void InPlaceReverse(LinkedList *mylist) {
   // return mylist->head;
 }
 
-#endif // LINKED_LIST_H
+#endif
