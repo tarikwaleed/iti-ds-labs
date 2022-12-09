@@ -1,139 +1,20 @@
 #ifndef TREE_H
 #define TREE_H
+#include "bst_node.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node Node;
-typedef struct Tree Tree;
-
-struct Node {
-  int Data;
-  Node *Left, *Right;
-};
-
-struct Tree {
-  Node *Root;
-};
-
-void Add(Tree *tree, int data) {
-  Node *node = (Node *)malloc(sizeof(Node));
-  node->Data = data;
-  node->Left = node->Right = NULL;
-
-  if (tree->Root == NULL) {
-    tree->Root = node;
-  } else {
-    Node *current = tree->Root;
-    Node *parent;
-
-    while (current != NULL) {
-      parent = current;
-
-      if (data > current->Data)
-        current = current->Right;
-      else
-        current = current->Left;
-    }
-
-    if (data > parent->Data)
-      parent->Right = node;
-    else
-      parent->Left = node;
-  }
+typedef struct Tree {
+  BSTNode *Root;
+} Tree;
+void GoRight(BSTNode *current) {
+  *current = *current->Right;
 }
-
-Node *GetNodeByData(Tree *tree, int data) {
-  Node *current = tree->Root;
-
-  while (current != NULL) {
-    if (data == current->Data)
-      return current;
-
-    if (data > current->Data)
-      current = current->Right;
-    else
-      current = current->Left;
-  }
-
-  return NULL;
+void GoLeft(BSTNode *current) {
+  *current = *current->Left;
 }
-
-Node *GetParent(Tree *tree, Node *node) {
-  Node *parent = tree->Root;
-
-  while (parent != NULL) {
-    if (parent->Left == node || parent->Right == node)
-      return parent;
-
-    if (node->Data > parent->Data)
-      parent = parent->Right;
-    else
-      parent = parent->Left;
-  }
-
-  return NULL;
-}
-
-Node *GetMaxRight(Node *node) {
-  Node *current = node;
-
-  while (current->Right != NULL) {
-    current = current->Right;
-  }
-
-  return current;
-}
-
-void Remove(Tree *tree, int data) {
-  Node *node = GetNodeByData(tree, data);
-
-  if (node == NULL)
-    return;
-
-  if (node == tree->Root) {
-    if (node->Left == NULL && node->Right == NULL) {
-      tree->Root = NULL;
-    } else if (node->Right == NULL) {
-      tree->Root = tree->Root->Left;
-    } else if (node->Left == NULL) {
-      tree->Root = tree->Root->Right;
-    } else {
-      Node *newRoot = tree->Root->Left;
-      Node *maxRight = GetMaxRight(newRoot);
-
-      maxRight->Right = tree->Root->Right;
-      tree->Root = newRoot;
-    }
-  } else {
-    Node *parent = GetParent(tree, node);
-    Node *newChild;
-
-    if (node->Left == NULL && node->Right == NULL) {
-      newChild = NULL;
-    } else if (node->Right == NULL) {
-      newChild = node->Left;
-    } else if (node->Left == NULL) {
-      newChild = node->Right;
-    } else {
-      Node *newParent = node->Left;
-      Node *maxRight = GetMaxRight(newParent);
-
-      maxRight->Right = node->Right;
-
-      newChild = newParent;
-    }
-
-    if (parent->Left == node)
-      parent->Left = newChild;
-    else
-      parent->Right = newChild;
-  }
-
-  free(node);
-}
-
-void Display(Node *node) {
-  if (node == NULL)
+void Display(BSTNode *node) {
+  if (!node)
     return;
 
   Display(node->Left);
@@ -141,12 +22,136 @@ void Display(Node *node) {
   Display(node->Right);
 }
 
-int GetMaxDepth(Node *node) {
-  if (!node)
-    return 0;
-  int x = 1 + GetMaxDepth(node->Right);
-  int y = 1 + GetMaxDepth(node->Left);
-  return x > y ? x : y;
+void BST_add(Tree *tree, int data) {
+  BSTNode *node = CreateBSTNode(data);
+
+  if (!(tree->Root)) {
+    tree->Root = node;
+  } else {
+    BSTNode *current = tree->Root;
+    BSTNode *parent;
+
+    while (current) {
+      parent = current;
+      if (data > current->Data)
+        // GoRight(&current);
+        current = current->Right;
+      else
+        current = current->Left;
+      // GoLeft(&current);
+    }
+    if (data > parent->Data)
+      parent->Right = node;
+    else
+      parent->Left = node;
+  }
 }
+// void BST_add_recursive(Tree *tree, int data) {
+//   // base case
+//   if (!tree->Root) {
+//     tree->Root = CreateBSTNode(data);
+//   } else if (data > tree->Root->Data) {
+//     tree->Root->Right
+//   }
+// }
+
+
+// BSTNode *GetNodeByData(Tree *tree, int data) {
+//   BSTNode *current = tree->Root;
+
+//   while (current != NULL) {
+//     if (data == current->Data)
+//       return current;
+
+//     if (data > current->Data)
+//       current = current->Right;
+//     else
+//       current = current->Left;
+//   }
+
+//   return NULL;
+// }
+
+// BSTNode *GetParent(Tree *tree, BSTNode *node) {
+//   BSTNode *parent = tree->Root;
+
+//   while (parent != NULL) {
+//     if (parent->Left == node || parent->Right == node)
+//       return parent;
+
+//     if (node->Data > parent->Data)
+//       parent = parent->Right;
+//     else
+//       parent = parent->Left;
+//   }
+
+//   return NULL;
+// }
+
+// BSTNode *GetMaxRight(BSTNode *node) {
+//   BSTNode *current = node;
+
+//   while (current->Right != NULL) {
+//     current = current->Right;
+//   }
+
+//   return current;
+// }
+
+// void Remove(Tree *tree, int data) {
+//   BSTNode *node = GetNodeByData(tree, data);
+
+//   if (node == NULL)
+//     return;
+
+//   if (node == tree->Root) {
+//     if (node->Left == NULL && node->Right == NULL) {
+//       tree->Root = NULL;
+//     } else if (node->Right == NULL) {
+//       tree->Root = tree->Root->Left;
+//     } else if (node->Left == NULL) {
+//       tree->Root = tree->Root->Right;
+//     } else {
+//       BSTNode *newRoot = tree->Root->Left;
+//       BSTNode *maxRight = GetMaxRight(newRoot);
+
+//       maxRight->Right = tree->Root->Right;
+//       tree->Root = newRoot;
+//     }
+//   } else {
+//     BSTNode *parent = GetParent(tree, node);
+//     BSTNode *newChild;
+
+//     if (node->Left == NULL && node->Right == NULL) {
+//       newChild = NULL;
+//     } else if (node->Right == NULL) {
+//       newChild = node->Left;
+//     } else if (node->Left == NULL) {
+//       newChild = node->Right;
+//     } else {
+//       BSTNode *newParent = node->Left;
+//       BSTNode *maxRight = GetMaxRight(newParent);
+
+//       maxRight->Right = node->Right;
+
+//       newChild = newParent;
+//     }
+
+//     if (parent->Left == node)
+//       parent->Left = newChild;
+//     else
+//       parent->Right = newChild;
+//   }
+
+//   free(node);
+// }
+
+// int GetMaxDepth(BSTNode *node) {
+//   if (!node)
+//     return 0;
+//   int x = 1 + GetMaxDepth(node->Right);
+//   int y = 1 + GetMaxDepth(node->Left);
+//   return x > y ? x : y;
+// }
 
 #endif // TREE_H

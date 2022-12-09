@@ -7,9 +7,7 @@ typedef struct Node {
   struct Node *Next;
 } Node;
 Node *CreateNode(int data) {
-  // Allocate the node in the heap
   Node *newNode = (Node*)malloc(sizeof(Node));
-  // Fill its members
   newNode->Data = data;
   newNode->Prev = NULL;
   newNode->Next = NULL;
