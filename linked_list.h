@@ -10,10 +10,52 @@ typedef struct LinkedList {
   int lenght;
 
 } LinkedList;
+void LinkedList_Display(LinkedList *mylist) {
+  struct Node *current = mylist->head;
 
-void LinkedListInsert_tail(LinkedList *mylist, int data) {
+  while (current) {
+    printf("%d  ", current->Data);
+    current = current->Next;
+  }
+  printf("\n");
+}
+int LinkedList_GetDataByIndex(LinkedList *mylist, int index) {
+  Node *current = mylist->head;
+  int count = 0;
+  while (current) {
+    if (index == count) {
+      return current->Data;
+    }
+    count++;
+    current = current->Next;
+  }
+  return 0;
+}
+
+Node *LinkedList_GetNodeByData(LinkedList *mylist, int data) {
+  Node *current = mylist->head;
+
+  while (current) {
+    if (current->Data == data)
+      return current;
+    current = current->Next;
+  }
+}
+
+int GetCount(LinkedList *mylist) {
+  Node *current = mylist->head;
+  int count = 0;
+  while (current) {
+    count++;
+    current = current->Next;
+  }
+  return count;
+}
+
+void LinkedList_Insert_tail(LinkedList *mylist, int data) {
   Node *newNode = CreateNode(data);
 
+  // check if it's the first node that'll be inserted
   if (mylist->head == NULL) {
     mylist->head = mylist->tail = newNode;
   } else {
@@ -23,36 +65,42 @@ void LinkedListInsert_tail(LinkedList *mylist, int data) {
   }
   mylist->lenght++;
 }
-
-void LinkedListDisplay(LinkedList *mylist) {
-  struct Node *current = mylist->head;
-
-  while (current != NULL) {
-    printf("%d  ", current->Data);
-    current = current->Next;
+void LinkedList_Insert_head(LinkedList *mylist, int data) {
+  Node *newNode = CreateNode(data);
+  if (mylist->head == NULL) {
+    mylist->head = mylist->tail = newNode;
+  } else {
+    mylist->head->Prev = newNode;
+    newNode->Next = mylist->head;
+    mylist->head = newNode;
   }
-  printf("\n");
+  mylist->lenght++;
 }
 
-Node *GetNodeByData(LinkedList *mylist, int data) {
-  Node *current = mylist->head;
-
-  while (current != NULL) {
-    if (current->Data == data)
-      return current;
-    current = current->Next;
+void LinkedList_Insert_after_data(LinkedList *mylist, int data, int afterData) {
+  Node *target = LinkedList_GetNodeByData(mylist, afterData);
+  if (target) {
+    Node *newNode = CreateNode(data);
+    newNode->Next = target->Next;
+    newNode->Prev = target;
+    target->Next = newNode;
+    // if (target == mylist->tail) {
+    if (target->Next)
+      newNode->Next->Prev = newNode;
+    else
+      mylist->tail = newNode;
   }
 }
 
-void LinkedListRemove(LinkedList *mylist, int data) {
-  Node *node = GetNodeByData(mylist, data);
+void LinkedList_Remove(LinkedList *mylist, int data) {
+  Node *node = LinkedList_GetNodeByData(mylist, data);
 
   // the node doesn't exist in the list
   if (!node)
     return;
 
   // the node is the first elemnt in the list
-  if (node == mylist->head) { 
+  if (node == mylist->head) {
     // the node is the first and only element
     if (mylist->head == mylist->tail) {
       mylist->head = mylist->tail = NULL;
@@ -76,45 +124,6 @@ void LinkedListRemove(LinkedList *mylist, int data) {
   free(node);
 }
 
-void InsertAfterX(LinkedList *mylist, int data, int xData) {
-  Node *x = GetNodeByData(mylist, xData);
-  if (x != NULL) {
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    newNode->Data = data;
-    newNode->Next = x->Next;
-    newNode->Prev = x;
-    x->Next = newNode;
-    if (x == mylist->tail) {
-      mylist->tail = newNode;
-    } else {
-      newNode->Next->Prev = newNode;
-    }
-  }
-}
-
-int GetDataByIndex(LinkedList *mylist, int index) {
-  Node *x = mylist->head;
-  int count = 0;
-  while (x != NULL) {
-    if (index == count) {
-      return x->Data;
-    }
-    count++;
-    x = x->Next;
-  }
-  return 0;
-}
-
-int GetCount(LinkedList *mylist) {
-  Node *x = mylist->head;
-  int count = 0;
-  while (x != NULL) {
-    count++;
-    x = x->Next;
-  }
-  return count;
-}
-
 Node *Reverse(LinkedList *mylist) {
 }
 
@@ -124,7 +133,7 @@ void InPlaceReverse(LinkedList *mylist) {
     return;
   Node *current = mylist->head;
   Node *temp;
-  while (current != NULL) {
+  while (current) {
     // 1
     temp = current->Next;
     // 2
